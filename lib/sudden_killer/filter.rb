@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 require 'okura/serializer'
-module Totsuzenizer
+module SuddenKiller
   class Filter
 
     def initialize(dict_dir)
@@ -20,7 +20,7 @@ module Totsuzenizer
       index = 0
       while ! words.empty?
         if match?(words)
-          ret =  words.map{|w|w[:surface]}.join + T::TOTSUZENSHI_AA
+          ret =  words.map{|w|w[:surface]}.join + SK::TOTSUZENSHI_AA
           return ret
         end
         words.pop

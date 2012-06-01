@@ -8,6 +8,6 @@ ENV['BUNDLE_GEMFILE'] ||= File.join(root, 'Gemfile')
 require 'bundler'
 Bundler.require
 
-require 'totsuzenizer'
+require 'sudden_killer'
 
 Dir[File.join(File.dirname(__FILE__), "..", "lib", "*.rb")].each{ |f| require f }

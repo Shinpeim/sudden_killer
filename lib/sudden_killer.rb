@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-require 'totsuzenizer/filter'
+require 'sudden_killer/filter'
 
-module Totsuzenizer
+module SuddenKiller
 
   TOTSUZENSHI_AA = "\n＿人人人人人＿\n＞ 突然の死 ＜\n￣ＹＹＹＹＹ￣"
 
@@ -12,5 +12,5 @@ module Totsuzenizer
   end
 end
 
-#alias for Totsuzenizer
-T = Totsuzenizer
+#alias for SuddenKiller
+SK = SuddenKiller
