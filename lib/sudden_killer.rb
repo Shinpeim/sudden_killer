@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-require 'sudden_killer/filter'
+require 'sudden_killer/killer'
+require 'sudden_killer/twitter_interface'
 
 module SuddenKiller
 

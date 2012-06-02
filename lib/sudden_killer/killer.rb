@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
 require 'okura/serializer'
 module SuddenKiller
-  class Filter
+  class Killer
+
+    PATTERNS = [[{:word_class => "名詞"}, {:word_class => "助詞", :surface => "の"}].freeze,
+                [{:word_class => "動詞"}, {:word_class => "助詞", :surface => "て"}].freeze,
+                [{:word_class => "名詞"}, {:word_class => "助動詞", :surface => "だ"}, {:word_class => "助詞", :surface => "と"}].freeze]
 
     def initialize(dict_dir)
       @dict_dir = dict_dir
     end
 
-    def totsuzenize(text)
+    def kill(text)
       words = parse(text)
       words = words.select { |e| e.surface != "BOS/EOS"}
       words = words.map{|w|
@@ -31,15 +35,9 @@ module SuddenKiller
 
     private
 
-    def patterns
-      [[{:word_class => "名詞"}, {:word_class => "助詞", :surface => "の"}].freeze,
-       [{:word_class => "動詞"}, {:word_class => "助詞", :surface => "て"}].freeze,
-       [{:word_class => "名詞"}, {:word_class => "助動詞", :surface => "だ"}, {:word_class => "助詞", :surface => "と"}].freeze]
-    end
-
     #wordsの末尾がマッチするかチェック
     def match?(words)
-      patterns.each do |pattern|
+      PATTERNS.each do |pattern|
         next if pattern.size > words.size
 
         matched = true
