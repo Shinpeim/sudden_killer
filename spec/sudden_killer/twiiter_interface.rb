@@ -38,6 +38,12 @@ describe SK::TwitterInterface do
       @twitter_interface.posted_text.should == nil
     end
 
+    it "スクリーンネームが含まれるtweetは無視する" do
+      status = {:text => 'RT:@nya--n それから少し間を置いて、私は部屋に帰った'}
+      @twitter_interface.recieve_status(status)
+      @twitter_interface.posted_text.should == nil
+    end
+
     it "ひっかかる文字列なら突然死する" do
       status = {:text => 'それから少し間を置いて、私は部屋に帰った'}
       @twitter_interface.recieve_status(status)

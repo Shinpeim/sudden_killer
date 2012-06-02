@@ -22,6 +22,7 @@ module SuddenKiller
     end
 
     def recieve_tweet(status)
+      return if status[:text].include?('@')
       text = killer.kill(status[:text])
       return unless text
       post(text)
