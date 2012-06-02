@@ -44,6 +44,11 @@ describe SK::TwitterInterface do
       @twitter_interface.posted_text.should == nil
     end
 
+    it "140字超える場合は無視する" do
+      status = {:text => 'x' * 140 + 'それから少し間を置いて、私は部屋に帰った'}
+      @twitter_interface.recieve_status(status)
+    end
+
     it "ひっかかる文字列なら突然死する" do
       status = {:text => 'それから少し間を置いて、私は部屋に帰った'}
       @twitter_interface.recieve_status(status)

@@ -22,9 +22,13 @@ module SuddenKiller
     end
 
     def recieve_tweet(status)
-      return if status[:text].include?('@')
+      return nil if status[:text].include?('@')
+
       text = killer.kill(status[:text])
-      return unless text
+      return nil unless text
+
+      return nil if text.size > 140
+
       post(text)
     end
 
