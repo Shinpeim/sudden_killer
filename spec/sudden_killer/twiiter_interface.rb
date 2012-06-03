@@ -26,7 +26,7 @@ describe SK::TwitterInterface do
       @twitter_interface = SK::TwitterInterface.new(@killer)
       @user_id = 2
       status = {:event => 'follow', :source => {:id => @user_id}}
-      @twitter_interface.recieve_status(status)
+      @twitter_interface.send(:recieve_status, status)
     end
 
     it "refollowする" do
@@ -41,24 +41,24 @@ describe SK::TwitterInterface do
 
     it "ひっかからない文字列なら何もしない" do
       status = {:text => 'ニャーン！'}
-      @twitter_interface.recieve_status(status)
+      @twitter_interface.send(:recieve_status, status)
       @twitter_interface.posted_text.should == nil
     end
 
     it "スクリーンネームが含まれるtweetは無視する" do
       status = {:text => 'RT:@nya--n それから少し間を置いて、私は部屋に帰った'}
-      @twitter_interface.recieve_status(status)
+      @twitter_interface.send(:recieve_status, status)
       @twitter_interface.posted_text.should == nil
     end
 
     it "140字超える場合は無視する" do
       status = {:text => 'x' * 140 + 'それから少し間を置いて、私は部屋に帰った'}
-      @twitter_interface.recieve_status(status)
+      @twitter_interface.send(:recieve_status, status)
     end
 
     it "ひっかかる文字列なら突然死する" do
       status = {:text => 'それから少し間を置いて、私は部屋に帰った'}
-      @twitter_interface.recieve_status(status)
+      @twitter_interface.send(:recieve_status, status)
       @twitter_interface.posted_text.should ==
         "それから少し間を置いて" + SK::TOTSUZENSHI_AA
     end
@@ -71,13 +71,13 @@ describe SK::TwitterInterface do
 
       @twitter_interface = SK::TwitterInterface.new(@killer)
       status = {:text => 'それから少し間を置いて、私は部屋に帰った'}
-      @twitter_interface.recieve_status(status)
+      @twitter_interface.send(:recieve_status, status)
     end
 
     it "10分間はひっかかる文字列があってもtweetしない" do
       Timecop.freeze(@base_time + (5 * 60))
       status = {:text => '新しいtweetがあっても、なにもしない。それから少し間を置いて、私は部屋に帰った'}
-      @twitter_interface.recieve_status(status)
+      @twitter_interface.send(:recieve_status, status)
       @twitter_interface.posted_text.should ==
         "それから少し間を置いて" + SK::TOTSUZENSHI_AA #以前のまま
     end
@@ -85,7 +85,7 @@ describe SK::TwitterInterface do
     it "10分後はひっかかる文字列があったらtweetする" do
       Timecop.freeze(@base_time + (10 * 60) + 1)
       status = {:text => '新しいtweetがあったら、tweetする。それから少し間を置いて、私は部屋に帰った'}
-      @twitter_interface.recieve_status(status)
+      @twitter_interface.send(:recieve_status, status)
       @twitter_interface.posted_text.should ==
         "新しいtweetがあったら、tweetする。それから少し間を置いて" + SK::TOTSUZENSHI_AA #以前のまま
     end

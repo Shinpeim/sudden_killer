@@ -1,9 +1,12 @@
 module SuddenKiller
   class TwitterInterface
+
     def initialize(killer)
       @killer = killer
       @keep_silent_until = Time.now
     end
+
+    private
 
     def recieve_status(status)
       if status[:event] && status[:event] == 'follow'
@@ -14,9 +17,6 @@ module SuddenKiller
       end
     end
 
-    private
-    attr_accessor :killer
-
     def recieve_follow_event(status)
       user_id = status[:source][:id]
       follow(user_id)
@@ -25,7 +25,7 @@ module SuddenKiller
     def recieve_tweet(status)
       return nil if status[:text].include?('@')
 
-      text = killer.kill(status[:text])
+      text = @killer.kill(status[:text])
       return nil unless text
 
       return nil if text.size > 140
