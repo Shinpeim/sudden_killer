@@ -2,6 +2,12 @@ GEM
   remote: http://rubygems.org/
   specs:
     diff-lcs (1.1.3)
+    faraday (0.8.1)
+      multipart-post (~> 1.1)
+    hashie (1.2.0)
+    multi_json (1.3.6)
+    multipart-post (1.1.5)
+    oauth (0.4.6)
     okura (0.0.1)
     rspec (2.8.0)
       rspec-core (~> 2.8.0)
@@ -11,7 +17,15 @@ GEM
     rspec-expectations (2.8.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.8.0)
+    simple_oauth (0.1.8)
     timecop (0.3.5)
+    twitter (2.5.0)
+      faraday (~> 0.8)
+      multi_json (~> 1.3)
+      simple_oauth (~> 0.1.6)
+    userstream (1.2.2)
+      hashie (~> 1.2.0)
+      oauth (~> 0.4.6)
 
 PLATFORMS
   ruby
@@ -21,3 +35,5 @@ DEPENDENCIES
   okura
   rspec (~> 2.8.0)
   timecop (~> 0.3.5)
+  twitter
+  userstream

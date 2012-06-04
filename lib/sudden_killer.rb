@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 require 'sudden_killer/killer'
 require 'sudden_killer/twitter_interface'
+require 'sudden_killer/twitter_interface/configuration'
 
 module SuddenKiller
 

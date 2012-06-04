@@ -6,6 +6,13 @@ module SuddenKiller
       @keep_silent_until = Time.now
     end
 
+    def run
+      stream_client.user do |status|
+        p status
+        recieve_status(status)
+      end
+    end
+
     private
 
     def recieve_status(status)
@@ -39,10 +46,35 @@ module SuddenKiller
       post(text)
     end
 
+    def twitter_client
+      @twitter_client ||= lambda do
+        Twitter.configure do |config|
+          config.consumer_key       = Configuration.consumer_key
+          config.consumer_secret    = Configuration.consumer_secret
+          config.oauth_token        = Configuration.oauth_token
+          config.oauth_token_secret = Configuration.oauth_token_secret
+        end
+        Twitter::Client.new
+      end.call
+    end
+
+    def stream_client
+      @stream_client ||= lambda do
+        UserStream.configure do |config|
+          config.consumer_key       = Configuration.consumer_key
+          config.consumer_secret    = Configuration.consumer_secret
+          config.oauth_token        = Configuration.oauth_token
+          config.oauth_token_secret = Configuration.oauth_token_secret
+        end
+      end.call
+    end
+
     def follow(user_id)
+      twitter_client.follow(user_id)
     end
 
     def post(text)
+      twitter_client.update(text)
     end
   end
 end
