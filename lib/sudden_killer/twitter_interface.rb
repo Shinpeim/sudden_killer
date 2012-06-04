@@ -7,9 +7,14 @@ module SuddenKiller
     end
 
     def run
-      stream_client.user do |status|
-        p status
-        recieve_status(status)
+      loop do
+        begin
+          stream_client.user do |status|
+            recieve_status(status)
+          end
+        rescue => e
+          p e
+        end
       end
     end
 
