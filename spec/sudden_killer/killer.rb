@@ -13,13 +13,6 @@ describe SK::Killer do
     end
   end
 
-  context '「名詞 + の(助詞)」が含まれるとき' do
-    it "一番後ろの「名詞 + の」でマッチして「突然の死」を返す" do
-      @filter.kill("この前新宿のユニクロにいったとき、彼氏のサンダルを買ったんだけど").should ==
-        "この前新宿のユニクロにいったとき、彼氏の" + SK::TOTSUZENSHI_AA
-    end
-  end
-
   context '「名詞 + だ(助詞) + と(助詞)」が含まれるとき' do
     it "一番後ろの「名詞 + だ + と」でマッチして「突然の死」を返す" do
       @filter.kill("ご飯を食べるときに、あんまり周りが静かだと緊張する").should ==
