@@ -41,6 +41,7 @@ module SuddenKiller
       return nil unless text
 
       return nil if text.size > 140
+      return nil if text.size < 40
 
       now = Time.now
       if (now < @keep_silent_until)

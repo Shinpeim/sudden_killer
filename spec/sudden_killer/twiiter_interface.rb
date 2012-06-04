@@ -54,13 +54,20 @@ describe SK::TwitterInterface do
     it "140字超える場合は無視する" do
       status = {:text => 'x' * 140 + 'それから少し間を置いて、私は部屋に帰った'}
       @twitter_interface.send(:recieve_status, status)
+      @twitter_interface.posted_text.should == nil
+    end
+
+    it "短かすぎる場合無視する" do
+      status = {:text => 'それから少し間を置いて、私は部屋に帰った'}
+      @twitter_interface.send(:recieve_status, status)
+      @twitter_interface.posted_text.should == nil
     end
 
     it "ひっかかる文字列なら突然死する" do
-      status = {:text => 'それから少し間を置いて、私は部屋に帰った'}
+      status = {:text => 'そんなこんながあって、それから少し間を置いて、私は部屋に帰った'}
       @twitter_interface.send(:recieve_status, status)
       @twitter_interface.posted_text.should ==
-        "それから少し間を置いて" + SK::TOTSUZENSHI_AA
+        "そんなこんながあって、それから少し間を置いて" + SK::TOTSUZENSHI_AA
     end
   end
 
@@ -70,7 +77,7 @@ describe SK::TwitterInterface do
       Timecop.freeze(@base_time)
 
       @twitter_interface = SK::TwitterInterface.new(@killer)
-      status = {:text => 'それから少し間を置いて、私は部屋に帰った'}
+      status = {:text => 'そんなこんながあって、それから少し間を置いて、私は部屋に帰った'}
       @twitter_interface.send(:recieve_status, status)
     end
 
@@ -79,7 +86,7 @@ describe SK::TwitterInterface do
       status = {:text => '新しいtweetがあっても、なにもしない。それから少し間を置いて、私は部屋に帰った'}
       @twitter_interface.send(:recieve_status, status)
       @twitter_interface.posted_text.should ==
-        "それから少し間を置いて" + SK::TOTSUZENSHI_AA #以前のまま
+        "そんなこんながあって、それから少し間を置いて" + SK::TOTSUZENSHI_AA #以前のまま
     end
 
     it "10分後はひっかかる文字列があったらtweetする" do
