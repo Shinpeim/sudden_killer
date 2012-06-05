@@ -4,12 +4,12 @@ module SuddenKiller
   class Killer
 
     PATTERNS = [
-      [{:word_class => "動詞"}, {:word_class => "助詞", :surface => "て"}].freeze,
       [{:word_class => "動詞"}, {:word_class => "助詞", :surface => "と"}].freeze,
       [{:word_class => "動詞"}, {:word_class => "助詞", :surface => "けど"}].freeze,
       [{:word_class => "動詞"}, {:word_class => "助動詞", :surface => "た"}, {:word_class => "助詞", :surface => "けど"}].freeze,
       [{:word_class => "名詞"}, {:word_class => "助詞", :surface => "で"}].freeze,
       [{:word_class => "名詞"}, {:word_class => "助動詞", :surface => "だ"}, {:word_class => "助詞", :surface => "と"}].freeze,
+      [{:word_class => "名詞"}, {:word_class => "助動詞", :surface => "だ"}, {:word_class => "助詞", :surface => "けど"}].freeze,
     ].freeze
 
     def initialize(dict_dir)

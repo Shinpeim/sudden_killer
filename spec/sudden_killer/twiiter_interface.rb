@@ -46,28 +46,28 @@ describe SK::TwitterInterface do
     end
 
     it "スクリーンネームが含まれるtweetは無視する" do
-      status = {:text => 'RT:@nya--n それから少し間を置いて、私は部屋に帰った'}
+      status = {:text => 'RT:@nya--n 私黒髪で病弱でワンピースの似合う妹系の美少女だけど、sudden killerさんかっこいいと思う'}
       @twitter_interface.send(:recieve_status, status)
       @twitter_interface.posted_text.should == nil
     end
 
     it "140字超える場合は無視する" do
-      status = {:text => 'x' * 140 + 'それから少し間を置いて、私は部屋に帰った'}
+      status = {:text => 'x' * 140 + '私黒髪で病弱でワンピースの似合う妹系の美少女だけど、sudden killerさんかっこいいと思う'}
       @twitter_interface.send(:recieve_status, status)
       @twitter_interface.posted_text.should == nil
     end
 
     it "短かすぎる場合無視する" do
-      status = {:text => 'それから少し間を置いて、私は部屋に帰った'}
+      status = {:text => '私美少女だけど、sudden killerさんかっこいいと思う'}
       @twitter_interface.send(:recieve_status, status)
       @twitter_interface.posted_text.should == nil
     end
 
     it "ひっかかる文字列なら突然死する" do
-      status = {:text => 'そんなこんながあって、それから少し間を置いて、私は部屋に帰った'}
+      status = {:text => '私黒髪で病弱でワンピースの似合う妹系の美少女だけど、sudden killerさんかっこいいと思う'}
       @twitter_interface.send(:recieve_status, status)
       @twitter_interface.posted_text.should ==
-        "そんなこんながあって、それから少し間を置いて" + SK::TOTSUZENSHI_AA
+        '私黒髪で病弱でワンピースの似合う妹系の美少女だけど' + SK::TOTSUZENSHI_AA
     end
   end
 
@@ -77,24 +77,24 @@ describe SK::TwitterInterface do
       Timecop.freeze(@base_time)
 
       @twitter_interface = SK::TwitterInterface.new(@killer)
-      status = {:text => 'そんなこんながあって、それから少し間を置いて、私は部屋に帰った'}
+      status = {:text => '私黒髪で病弱でワンピースの似合う妹系の美少女だけど、sudden killerさんかっこいいと思う'}
       @twitter_interface.send(:recieve_status, status)
     end
 
     it "10分間はひっかかる文字列があってもtweetしない" do
       Timecop.freeze(@base_time + (5 * 60))
-      status = {:text => '新しいtweetがあっても、なにもしない。それから少し間を置いて、私は部屋に帰った'}
+      status = {:text => '新しいtweetがあっても、なにもしない。私黒髪で病弱でワンピースの似合う妹系の美少女だけど、sudden killerさんかっこいいと思う'}
       @twitter_interface.send(:recieve_status, status)
       @twitter_interface.posted_text.should ==
-        "そんなこんながあって、それから少し間を置いて" + SK::TOTSUZENSHI_AA #以前のまま
+        "私黒髪で病弱でワンピースの似合う妹系の美少女だけど" + SK::TOTSUZENSHI_AA #以前のまま
     end
 
     it "10分後はひっかかる文字列があったらtweetする" do
       Timecop.freeze(@base_time + (10 * 60) + 1)
-      status = {:text => '新しいtweetがあったら、tweetする。それから少し間を置いて、私は部屋に帰った'}
+      status = {:text => '新しいtweetがあったら、tweetする。私黒髪で病弱でワンピースの似合う妹系の美少女だけど、sudden killerさんかっこいいと思う'}
       @twitter_interface.send(:recieve_status, status)
       @twitter_interface.posted_text.should ==
-        "新しいtweetがあったら、tweetする。それから少し間を置いて" + SK::TOTSUZENSHI_AA #以前のまま
+        "新しいtweetがあったら、tweetする。私黒髪で病弱でワンピースの似合う妹系の美少女だけど" + SK::TOTSUZENSHI_AA #postした
     end
   end
 end
