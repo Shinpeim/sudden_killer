@@ -37,16 +37,16 @@ module SuddenKiller
     def recieve_tweet(status)
       return nil if status[:text].include?('@')
 
+      now = Time.now
+      if (now < @keep_silent_until)
+        return nil
+      end
+
       text = @killer.kill(status[:text])
       return nil unless text
 
       return nil if text.size > 140
       return nil if text.size < 40
-
-      now = Time.now
-      if (now < @keep_silent_until)
-        return nil
-      end
 
       @keep_silent_until = now + (60 * 10) # 10 min.
       post(text)
