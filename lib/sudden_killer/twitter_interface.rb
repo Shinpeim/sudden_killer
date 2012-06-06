@@ -1,8 +1,9 @@
 module SuddenKiller
   class TwitterInterface
 
-    def initialize(killer)
+    def initialize(killer,interval)
       @killer = killer
+      @interval = interval
       @keep_silent_until = Time.now
     end
 
@@ -48,7 +49,7 @@ module SuddenKiller
       return nil if text.size > 140
       return nil if text.size < 40
 
-      @keep_silent_until = now + (60 * 10) # 10 min.
+      @keep_silent_until = now + (60 * @interval)
       post(text)
     end
 

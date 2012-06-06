@@ -19,11 +19,12 @@ end
 describe SK::TwitterInterface do
   before do
     @killer = SK::Killer.new(File.join(SK.root, 'okura-dic'))
+    @interval = 10
   end
 
   context "followされたとき" do
     before do
-      @twitter_interface = SK::TwitterInterface.new(@killer)
+      @twitter_interface = SK::TwitterInterface.new(@killer, @interval)
       @user_id = 2
       status = {:event => 'follow', :source => {:id => @user_id}}
       @twitter_interface.send(:recieve_status, status)
@@ -36,7 +37,7 @@ describe SK::TwitterInterface do
 
   context "tweetを受け取ったとき" do
     before do
-      @twitter_interface = SK::TwitterInterface.new(@killer)
+      @twitter_interface = SK::TwitterInterface.new(@killer, @interval)
     end
 
     it "ひっかからない文字列なら何もしない" do
@@ -76,21 +77,21 @@ describe SK::TwitterInterface do
       @base_time = Time.now
       Timecop.freeze(@base_time)
 
-      @twitter_interface = SK::TwitterInterface.new(@killer)
+      @twitter_interface = SK::TwitterInterface.new(@killer, @interval)
       status = {:text => '私黒髪で病弱でワンピースの似合う妹系の美少女だけど、sudden killerさんかっこいいと思う'}
       @twitter_interface.send(:recieve_status, status)
     end
 
-    it "10分間はひっかかる文字列があってもtweetしない" do
-      Timecop.freeze(@base_time + (5 * 60))
+    it "#{@interval}分間はひっかかる文字列があってもtweetしない" do
+      Timecop.freeze(@base_time + (@interval * 60) - 1)
       status = {:text => '新しいtweetがあっても、なにもしない。私黒髪で病弱でワンピースの似合う妹系の美少女だけど、sudden killerさんかっこいいと思う'}
       @twitter_interface.send(:recieve_status, status)
       @twitter_interface.posted_text.should ==
         "私黒髪で病弱でワンピースの似合う妹系の美少女だけど" + SK::TOTSUZENSHI_AA #以前のまま
     end
 
-    it "10分後はひっかかる文字列があったらtweetする" do
-      Timecop.freeze(@base_time + (10 * 60) + 1)
+    it "#{@interval}分後はひっかかる文字列があったらtweetする" do
+      Timecop.freeze(@base_time + (@interval * 60) + 1)
       status = {:text => '新しいtweetがあったら、tweetする。私黒髪で病弱でワンピースの似合う妹系の美少女だけど、sudden killerさんかっこいいと思う'}
       @twitter_interface.send(:recieve_status, status)
       @twitter_interface.posted_text.should ==

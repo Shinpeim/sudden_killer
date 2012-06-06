@@ -8,11 +8,13 @@ require "sudden_killer"
 require 'optparse'
 
 tokens = {}
+interval = 10 #default
 OptionParser.new do |opt|
   opt.on('-t oauth token')        { |str| tokens[:oauth_token]        = str }
   opt.on('-T oauth token secret') { |str| tokens[:oauth_token_secret] = str }
   opt.on('-c consumer key')       { |str| tokens[:consumer_key]       = str }
   opt.on('-C consumer secret')    { |str| tokens[:consumer_secret]    = str }
+  opt.on('-i interval (minutes)') { |str| interval = str.to_i; }
 end.parse!(ARGV)
 
 SK::TwitterInterface::Configuration.configure do |config|
@@ -23,4 +25,4 @@ SK::TwitterInterface::Configuration.configure do |config|
 end
 
 killer = SK::Killer.new(File.join(SK.root, 'okura-dic'))
-SK::TwitterInterface.new(killer).run
+SK::TwitterInterface.new(killer, interval).run
