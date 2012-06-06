@@ -29,7 +29,7 @@ describe SK::Killer do
 
   context '「名詞 + で(助詞)」が含まれるとき' do
     it "一番後ろの「名詞 + で」でマッチして「突然の死」を返す" do
-      @filter.kill("スターバックスもあるし、代々木で待つことにした").should ==
+      @filter.kill("スターバックスもあるし、代々木で待つわ").should ==
         "スターバックスもあるし、代々木で" + SK::TOTSUZENSHI_AA
     end
   end
@@ -45,6 +45,13 @@ describe SK::Killer do
     it "一番後ろの「名詞 + だ + と」でマッチして「突然の死」を返す" do
       @filter.kill("ご飯を食べるときに、あんまり周りが静かだと緊張する").should ==
         "ご飯を食べるときに、あんまり周りが静かだと" + SK::TOTSUZENSHI_AA
+    end
+  end
+
+  context '「名詞 + に(助詞)」が含まれるとき' do
+    it "一番後ろの「名詞 + に」でマッチして「突然の死」を返す" do
+      @filter.kill("9mさん謹製のリマインダ氏にゴミ出しアラート機能ほしい").should ==
+        "9mさん謹製のリマインダ氏に" + SK::TOTSUZENSHI_AA
     end
   end
 

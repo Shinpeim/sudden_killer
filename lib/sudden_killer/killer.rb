@@ -10,6 +10,7 @@ module SuddenKiller
       [{:word_class => "名詞"}, {:word_class => "助詞", :surface => "で"}].freeze,
       [{:word_class => "名詞"}, {:word_class => "助動詞", :surface => "だ"}, {:word_class => "助詞", :surface => "と"}].freeze,
       [{:word_class => "名詞"}, {:word_class => "助動詞", :surface => "だ"}, {:word_class => "助詞", :surface => "けど"}].freeze,
+      [{:word_class => "名詞"}, {:word_class => "助詞", :surface => "に"}].freeze,
     ].freeze
 
     def initialize(dict_dir)
