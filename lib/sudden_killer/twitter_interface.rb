@@ -37,6 +37,7 @@ module SuddenKiller
 
     def recieve_tweet(status)
       return nil if status[:text].include?('@')
+      return nil if status[:user][:protected]
 
       now = Time.now
       if (now < @keep_silent_until)
