@@ -4,7 +4,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'spec_helper')
 # Twitterとのやり取り部分はMockにする
 module SuddenKiller
   class TwitterInterface
-    attr_reader :posted_text, :followed_user_id
+    attr_reader :posted_text, :followed_user_id, :unfollowed_user_id
 
     def post(text)
       @posted_text = text
@@ -12,6 +12,10 @@ module SuddenKiller
 
     def follow(user_id)
       @followed_user_id = user_id
+    end
+
+    def unfollow(user_id)
+      @unfollowed_user_id = user_id
     end
   end
 end
@@ -32,6 +36,18 @@ describe SK::TwitterInterface do
 
     it "refollowする" do
       @twitter_interface.followed_user_id.should == @user_id
+    end
+  end
+
+  context "unfollowっていうリプライを受け取ったとき" do
+    before do
+      @twitter_interface = SK::TwitterInterface.new(@killer, @interval)
+      @user_id = 2
+      status = {:text => '@totsuzenshi_bot unfollow',:user => {:id => 2}}
+      @twitter_interface.send(:recieve_status, status)
+    end
+    it "unfollowする" do
+      @twitter_interface.unfollowed_user_id.should == @user_id
     end
   end
 

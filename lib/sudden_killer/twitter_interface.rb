@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module SuddenKiller
   class TwitterInterface
 
@@ -35,7 +36,17 @@ module SuddenKiller
       follow(user_id)
     end
 
+    def recieve_reply(status)
+      if status[:text].include?('unfollow')
+        unfollow(status[:user][:id])
+      end
+    end
+
     def recieve_tweet(status)
+      if (status[:text].include?('@totsuzenshi_bot'))
+        recieve_reply(status)
+      end
+
       return nil if status[:text].include?('@')
       return nil if status[:user][:protected]
 
@@ -79,6 +90,10 @@ module SuddenKiller
 
     def follow(user_id)
       twitter_client.follow(user_id)
+    end
+
+    def unfollow(user_id)
+      twitter_client.unfollow(user_id)
     end
 
     def post(text)
